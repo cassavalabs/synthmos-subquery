@@ -2,20 +2,119 @@
 # Add the `@index` or `@index(unique: true)` annotation after any non-key field
 # https://academy.subquery.network/build/graphql.html#indexing-by-non-primary-key-field
 
-type Transfer @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  to: String!
-  from: String!
-  value: BigInt!
-  contractAddress: String!
+enum Option {
+  HIGH
+  LOW
 }
 
-type Approval @entity {
-  id: ID! # Transaction hash
-  blockHeight: BigInt
-  owner: String!
-  spender: String!
-  value: BigInt!
-  contractAddress: String!
+type Round @entity {
+  "MarketId-RoundID"
+  id: ID!
+  "The market this round exist in"
+  market: Market!
+  "Unix timestamp of when round is open"
+  openingTime: BigInt!
+  "Unix timestamp of when round will end"
+  closingTime: BigInt!
+  "Unix timestamp of when entry to market is no longer permitted"
+  entryDeadline: BigInt!
+  "Asset market closing price"
+  closingPrice: BigInt
+  "Total share amount of users participating in the current round"
+  volume: BigInt!
+  "Total share amount of winners in the current round"
+  totalWinShare: BigInt!
+  "Total amount available as reward for current round"
+  rewardPool: BigInt!
+  "True if this is a no loss round"
+  isNoLossMode: Boolean
+  "True if round has been finalized, otherwise false"
+  isFinalized: Boolean
+}
+
+type Withdrawal @entity {
+  "Transaction hash"
+  id: ID!
+  "Account making the request"
+  account: Account! @index(unique: false)
+  "Withdrawal amount requested"
+  amount: BigInt!
+  "Unix timestamp of when request was received"
+  requestedOn: BigInt!
+  "Unix timestamp of when request was completed"
+  completedOn: BigInt
+  "Status of withdrawal, false if not yet completed"
+  isCompleted: Boolean!
+}
+
+type Deposit @entity {
+  "Transaction hash"
+  id: ID!
+  "Account making deposit"
+  account: Account! @index(unique: false)
+  "The currency deposited"
+  currency: String!
+  "Amount deposited"
+  amount: BigInt!
+  "Unix timestamp of when deposit was received"
+  createdAt: BigInt!
+}
+
+type Position @entity {
+  "positionId = keccak256(abi.encodePacked(marketId, roundId, owner))"
+  id: ID!
+  "Account"
+  account: Account! @index(unique: false)
+  "Active round position was taken"
+  round: Round!
+  "Asset price when position was taken"
+  price: BigInt!
+  "Amount staked as wager for position"
+  share: BigInt!
+  "Predicted market directon"
+  option: Option!
+  "True if user has claimed reward for round"
+  isRewardClaimed: Boolean!
+  "Amount of reward claimed"
+  rewardAmountClaimed: BigInt
+  "Unix timestamp when position was created"
+  createdAt: BigInt!
+}
+
+type Account @entity {
+  "Account bytes32 address"
+  id: ID!
+  "Balance of account"
+  balance: BigInt!
+  "This accounts positions"
+  positions: [Position!]! @derivedFrom(field: "account")
+  "The deposits made by this account"
+  deposits: [Deposit!]! @derivedFrom(field: "account")
+  "The withdrawals made by this account"
+  withdrawals: [Withdrawal!]! @derivedFrom(field: "account")
+}
+
+type Market @entity {
+  "keccak256(abi.encodePacked(oracleId, currency)"
+  id: ID!
+  "The Pyth network oracle id"
+  oracleId: String!
+  "The currency accepted on this market"
+  currency: String!
+  "The protocolFee charged on this market"
+  protocolFee: BigInt!
+  "The number of seconds after which entry to market will be closed"
+  deadline: BigInt!
+  "The duration of each market round in seconds"
+  duration: BigInt!
+  "True if the market is paused and participation is temporarilly disabled"
+  paused: Boolean!
+  "The total market volume"
+  volume: BigInt!
+  "The total high volume for this market"
+  highVolume: BigInt!
+  "The total low volume for this market"
+  lowVolume: BigInt!
+  "The total number of rounds on this market so far"
+  roundCount: BigInt!
 }
