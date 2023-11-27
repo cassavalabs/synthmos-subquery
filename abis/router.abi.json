@@ -1,1 +1,1230 @@
-[]
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_owner",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "_operator",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "AssetAllowedAlready",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "AssetNotAccepted",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CannotDepositZeroAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "CannotStakeZeroAmount",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "FundTransferFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InsufficientFee",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      }
+    ],
+    "name": "InsufficientVaultBalance",
+    "type": "error"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      }
+    ],
+    "name": "InvalidEVMAddress",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidLzPayload",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidRoundId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeBridge",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeChainId",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeEndpoint",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeFeePrecision",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeFinality",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "InvalidWormholeRelayer",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MarketDoesNotExist",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "MisTrustedRouter",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NoStoredFailedMessage",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotController",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "NotOperator",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "OnlyWormholeRelayerAllowed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "PositionNotFound",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RedeemFailed",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "RouterAlreadyExists",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnAuthorized",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnAuthorizedEndpointCaller",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnAuthorizedLzCall",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnAuthorizedWormholeRouter",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "UnSupportedMessageChannel",
+    "type": "error"
+  },
+  {
+    "inputs": [],
+    "name": "WormholeMessageProcessed",
+    "type": "error"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "AllowAsset",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Deposit",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "DisAllowAsset",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "MarketId",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "roundId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "positionId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "price",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stake",
+        "type": "uint256"
+      }
+    ],
+    "name": "High",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "MarketId",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "uint256",
+        "name": "roundId",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "positionId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "int256",
+        "name": "price",
+        "type": "int256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "stake",
+        "type": "uint256"
+      }
+    ],
+    "name": "Low",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "_dstChainId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "_functionType",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "_gas",
+        "type": "uint256"
+      }
+    ],
+    "name": "LzGasEstimate",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "_nonce",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "_payload",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "_reason",
+        "type": "bytes"
+      }
+    ],
+    "name": "LzMessageFailed",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "prevOperator",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOperator",
+        "type": "address"
+      }
+    ],
+    "name": "OperatorChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "prevOwner",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "OwnerChanged",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint64",
+        "name": "_nonce",
+        "type": "uint64"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "_payloadHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RetryMessageSuccess",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint16",
+        "name": "chainId",
+        "type": "uint16"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "routerAddress",
+        "type": "bytes32"
+      }
+    ],
+    "name": "RouterRegistered",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "positionId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "SettlePosition",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "account",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "Withdrawal",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "bridgedAsset",
+        "type": "address"
+      }
+    ],
+    "name": "allowAsset",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "channel",
+    "outputs": [
+      {
+        "internalType": "enum CommonErrorsAndEvents.Channel",
+        "name": "",
+        "type": "uint8"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "deposit",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "asset",
+        "type": "address"
+      }
+    ],
+    "name": "disAllowAsset",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_lzHomeChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "_lzEndpoint",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_lzControllerChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "_controllerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "enableLayerZero",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_whHomeChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "_relayer",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_whControllerChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "address",
+        "name": "_controllerAddress",
+        "type": "address"
+      }
+    ],
+    "name": "enableWormhole",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      }
+    ],
+    "name": "forceResumeReceive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "MarketId",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "roundId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stake",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "priceUpdate",
+        "type": "bytes"
+      }
+    ],
+    "name": "higher",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "layerZeroEndpoint",
+    "outputs": [
+      {
+        "internalType": "contract ILayerZeroEndpoint",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "MarketId",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "roundId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "stake",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "priceUpdate",
+        "type": "bytes"
+      }
+    ],
+    "name": "lower",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_nonce",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_payload",
+        "type": "bytes"
+      }
+    ],
+    "name": "lzReceive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "lzState",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "controller",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint16",
+        "name": "controllerChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "chainId",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_nonce",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_payload",
+        "type": "bytes"
+      }
+    ],
+    "name": "nonblockingLzReceive",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "operator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "owner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes",
+        "name": "_payload",
+        "type": "bytes"
+      },
+      {
+        "internalType": "bytes[]",
+        "name": "",
+        "type": "bytes[]"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_srcAddress",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_deliveryHash",
+        "type": "bytes32"
+      }
+    ],
+    "name": "receiveWormholeMessages",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "redeem",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_srcAdd",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      }
+    ],
+    "name": "registerLzRouter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes32",
+        "name": "_srcAddress",
+        "type": "bytes32"
+      }
+    ],
+    "name": "registerWhRouter",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_srcChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_srcAddress",
+        "type": "bytes"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_nonce",
+        "type": "uint64"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_payload",
+        "type": "bytes"
+      }
+    ],
+    "name": "retryMessage",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_version",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "_chainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_configType",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_config",
+        "type": "bytes"
+      }
+    ],
+    "name": "setConfig",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "_functionType",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint64",
+        "name": "_gas",
+        "type": "uint64"
+      }
+    ],
+    "name": "setLzDestGas",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOperator",
+        "type": "address"
+      }
+    ],
+    "name": "setOperator",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "newOwner",
+        "type": "address"
+      }
+    ],
+    "name": "setOwner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_version",
+        "type": "uint16"
+      }
+    ],
+    "name": "setReceiveVersion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint16",
+        "name": "_version",
+        "type": "uint16"
+      }
+    ],
+    "name": "setSendVersion",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint8",
+        "name": "action",
+        "type": "uint8"
+      },
+      {
+        "internalType": "uint64",
+        "name": "gasLimit",
+        "type": "uint64"
+      }
+    ],
+    "name": "setWhDstGas",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "MarketId",
+        "name": "id",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "roundId",
+        "type": "uint256"
+      }
+    ],
+    "name": "settlePosition",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token",
+        "type": "address"
+      }
+    ],
+    "name": "setup",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "synthDollar",
+    "outputs": [
+      {
+        "internalType": "contract ISynthDollar",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "vault",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "bridgedCurrency",
+        "type": "address"
+      },
+      {
+        "internalType": "bool",
+        "name": "isAccepted",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "currency",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "withdraw",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "wormholeRelayer",
+    "outputs": [
+      {
+        "internalType": "contract IWormholeRelayer",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "wormholeState",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "controller",
+        "type": "address"
+      },
+      {
+        "internalType": "uint16",
+        "name": "controllerChainId",
+        "type": "uint16"
+      },
+      {
+        "internalType": "uint16",
+        "name": "chainId",
+        "type": "uint16"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
