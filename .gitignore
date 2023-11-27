@@ -27,7 +27,8 @@ package-lock.json
 target/
 dist/
 src/types
-project.yaml
+*.yaml
+!subquery-multichain.yaml
 
 # JetBrains IDE
 .idea/
