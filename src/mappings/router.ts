@@ -11,7 +11,7 @@ import {
   getOrCreatePosition,
   getOrCreateWithdrawal,
 } from "./utils";
-import { Option } from "../types";
+import { Newtworks, Option } from "../types";
 
 export async function handleDeposit(log: DepositLog): Promise<void> {
   logger.info(`New deposit transaction log at block ${log.blockNumber}`);
@@ -21,19 +21,19 @@ export async function handleDeposit(log: DepositLog): Promise<void> {
   await deposit.save();
 }
 
-export async function handleLowerOption(log: LowLog): Promise<void> {
-  logger.info(`New low option transaction log at block ${log.blockNumber}`);
-  assert(log.args, "No log.args");
+async function _handleLow(_log: LowLog, _network: Newtworks): Promise<void> {
+  logger.info(`New low option transaction log at block ${_log.blockNumber}`);
+  assert(_log.args, "No log.args");
 
-  let { position } = await getOrCreatePosition(log, Option.LOW);
+  let { position } = await getOrCreatePosition(_log, Option.LOW, _network);
   await position.save();
 }
 
-export async function handleHigherOption(log: HighLog): Promise<void> {
-  logger.info(`New high option transaction log at block ${log.blockNumber}`);
-  assert(log.args, "No log.args");
+async function _handleHigh(_log: HighLog, _network: Newtworks): Promise<void> {
+  logger.info(`New high option transaction log at block ${_log.blockNumber}`);
+  assert(_log.args, "No log.args");
 
-  let { position } = await getOrCreatePosition(log, Option.HIGH);
+  let { position } = await getOrCreatePosition(_log, Option.HIGH, _network);
   await position.save();
 }
 
@@ -52,4 +52,39 @@ export async function handlePositionSettled(
     `New position settlement transaction log at block ${log.blockNumber}`
   );
   assert(log.args, "No log.args");
+}
+
+/**
+ * handle remote positions
+ */
+export async function handleHighAvalanche(log: HighLog): Promise<void> {
+  _handleHigh(log, Newtworks.AVALANCHE);
+}
+
+export async function handleLowAvalanche(log: LowLog): Promise<void> {
+  _handleLow(log, Newtworks.AVALANCHE);
+}
+
+export async function handleHighBNB(log: HighLog): Promise<void> {
+  _handleHigh(log, Newtworks.BNB);
+}
+
+export async function handleLowBNB(log: LowLog): Promise<void> {
+  _handleLow(log, Newtworks.BNB);
+}
+
+export async function handleHighEthereum(log: HighLog): Promise<void> {
+  _handleHigh(log, Newtworks.ETHEREUM);
+}
+
+export async function handleLowEthereum(log: LowLog): Promise<void> {
+  _handleLow(log, Newtworks.ETHEREUM);
+}
+
+export async function handleHighMoonbeam(log: HighLog): Promise<void> {
+  _handleHigh(log, Newtworks.MOONBEAM);
+}
+
+export async function handleLowMoonbeam(log: LowLog): Promise<void> {
+  _handleLow(log, Newtworks.MOONBEAM);
 }

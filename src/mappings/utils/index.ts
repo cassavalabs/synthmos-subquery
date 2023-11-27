@@ -6,7 +6,7 @@ import {
   WithdrawalLog,
 } from "../../types/abi-interfaces/ControllerAbi";
 import { Account, Deposit, Position, Withdrawal } from "../../types/models";
-import { Option, StatusCode } from "../../types";
+import { Newtworks, Option, StatusCode } from "../../types";
 
 export async function getAccount(address: string) {
   let account = await Account.get(address);
@@ -69,7 +69,8 @@ export async function getOrCreateWithdrawal(log: WithdrawalLog) {
 
 export async function getOrCreatePosition(
   log: HighLog | LowLog,
-  option: Option
+  option: Option,
+  network: Newtworks
 ) {
   assert(log.args, "No logs");
 
@@ -87,6 +88,7 @@ export async function getOrCreatePosition(
       stake: log.args.stake.toBigInt(),
       isRewardClaimed: false,
       isOpen: false,
+      network,
       status: StatusCode.IN_PROGRESS,
       createdAt: log.block.timestamp,
     });

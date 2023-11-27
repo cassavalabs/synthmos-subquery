@@ -20,6 +20,14 @@ enum StatusCode {
   POSITION_NOT_FOUND
 }
 
+enum Newtworks {
+  AVALANCHE
+  BNB
+  ETHEREUM
+  KLAYTN
+  MOONBEAM
+}
+
 type Round @entity {
   "MarketId-RoundID"
   id: ID!
@@ -94,6 +102,8 @@ type Position @entity {
   isOpen: Boolean!
   "True if user has claimed reward for round"
   isRewardClaimed: Boolean!
+  "The network this position was openned from"
+  network: Newtworks!
   "Amount of reward claimed"
   rewardAmountClaimed: BigInt
   "Postion status code"

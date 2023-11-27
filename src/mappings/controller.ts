@@ -12,7 +12,7 @@ import {
   WithdrawalLog,
 } from "../types/abi-interfaces/ControllerAbi";
 import { Market, Position, Round } from "../types/models";
-import { Option, StatusCode } from "../types";
+import { Newtworks, Option, StatusCode } from "../types";
 import {
   generateRoundId,
   getAccount,
@@ -51,7 +51,8 @@ export async function handleLow(log: LowLog): Promise<void> {
   if (round && market) {
     let { position, prevOption, prevStake } = await getOrCreatePosition(
       log,
-      Option.LOW
+      Option.LOW,
+      Newtworks.KLAYTN
     );
 
     position.isOpen = true;
@@ -87,7 +88,8 @@ export async function handleHigh(log: HighLog): Promise<void> {
   if (round && market) {
     let { position, prevOption, prevStake } = await getOrCreatePosition(
       log,
-      Option.HIGH
+      Option.HIGH,
+      Newtworks.KLAYTN
     );
 
     position.isOpen = true;

@@ -54,7 +54,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleLowerOption",
+            handler: "handleLowBNB",
             filter: {
               topics: [
                 "Low(MarketId indexed id, uint256 indexed roundId, bytes32 indexed account, bytes32 positionId, int256 price, uint256 stake)",
@@ -63,7 +63,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleHigherOption",
+            handler: "handleHighBNB",
             filter: {
               topics: [
                 "High(MarketId indexed id, uint256 indexed roundId, bytes32 indexed account, bytes32 positionId, int256 price, uint256 stake)",
