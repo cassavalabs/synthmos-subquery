@@ -42,7 +42,7 @@ const project: EthereumProject = {
         handlers: [
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleDeposit",
+            handler: "handleControllerDeposit",
             filter: {
               topics: [
                 "Deposit(address indexed currency, bytes32 indexed account, uint256 amount)",
@@ -51,7 +51,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleLowerOption",
+            handler: "handleLow",
             filter: {
               topics: [
                 "Low(MarketId indexed id, uint256 indexed roundId, bytes32 indexed account, bytes32 positionId, int256 price, uint256 stake)",
@@ -60,7 +60,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleHigherOption",
+            handler: "handleHigh",
             filter: {
               topics: [
                 "High(MarketId indexed id, uint256 indexed roundId, bytes32 indexed account, bytes32 positionId, int256 price, uint256 stake)",
@@ -69,7 +69,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handleWithdrawal",
+            handler: "handleControllerWithdrawal",
             filter: {
               topics: [
                 "Withdrawal(address indexed currency, bytes32 indexed account, uint256 amount)",
@@ -78,7 +78,7 @@ const project: EthereumProject = {
           },
           {
             kind: EthereumHandlerKind.Event,
-            handler: "handlePositionSettled",
+            handler: "handleControllerPositionSettled",
             filter: {
               topics: [
                 "SettlePosition(bytes32 indexed positionId, bytes32 indexed account, uint256 amount)",

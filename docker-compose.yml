@@ -32,8 +32,8 @@ services:
     volumes:
       - ./:/app
     command:
-      - --multi-chain
-      - -f=/app/klaytn.ts
+      # - --multi-chain
+      - -f=/app/klaytn.yaml
       - --db-schema=synthmos
       - --workers=1
       - --batch-size=10
@@ -44,113 +44,113 @@ services:
       timeout: 5s
       retries: 10
 
-  subquery-node-ethereum:
-    image: onfinality/subql-node-ethereum:latest
-    depends_on:
-      "postgres":
-        condition: service_healthy
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    volumes:
-      - ./:/app
-    command:
-      - --multi-chain
-      - -f=/app/ethereum.ts
-      - --db-schema=synthmos
-      - --workers=1
-      - --batch-size=10
-      - --unfinalized-blocks=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node-ethereum:3000/ready"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
+  # subquery-node-ethereum:
+  #   image: onfinality/subql-node-ethereum:latest
+  #   depends_on:
+  #     "postgres":
+  #       condition: service_healthy
+  #   restart: always
+  #   environment:
+  #     DB_USER: postgres
+  #     DB_PASS: postgres
+  #     DB_DATABASE: postgres
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #   volumes:
+  #     - ./:/app
+  #   command:
+  #     - --multi-chain
+  #     - -f=/app/ethereum.yaml
+  #     - --db-schema=synthmos
+  #     - --workers=1
+  #     - --batch-size=10
+  #     - --unfinalized-blocks=true
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://subquery-node-ethereum:3000/ready"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
 
-  subquery-node-avalanche:
-    image: onfinality/subql-node-ethereum:latest
-    depends_on:
-      "postgres":
-        condition: service_healthy
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    volumes:
-      - ./:/app
-    command:
-      - --multi-chain
-      - -f=/app/avalanche.ts
-      - --db-schema=synthmos
-      - --workers=1
-      - --batch-size=10
-      - --unfinalized-blocks=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node-avalanche:3000/ready"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
+  # subquery-node-avalanche:
+  #   image: onfinality/subql-node-ethereum:latest
+  #   depends_on:
+  #     "postgres":
+  #       condition: service_healthy
+  #   restart: always
+  #   environment:
+  #     DB_USER: postgres
+  #     DB_PASS: postgres
+  #     DB_DATABASE: postgres
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #   volumes:
+  #     - ./:/app
+  #   command:
+  #     - --multi-chain
+  #     - -f=/app/avalanche.yaml
+  #     - --db-schema=synthmos
+  #     - --workers=1
+  #     - --batch-size=10
+  #     - --unfinalized-blocks=true
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://subquery-node-avalanche:3000/ready"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
 
-  subquery-node-bnbchain:
-    image: onfinality/subql-node-ethereum:latest
-    depends_on:
-      "postgres":
-        condition: service_healthy
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    volumes:
-      - ./:/app
-    command:
-      - --multi-chain
-      - -f=/app/bnbchain.ts
-      - --db-schema=synthmos
-      - --workers=1
-      - --batch-size=10
-      - --unfinalized-blocks=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node-bnbchain:3000/ready"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
+  # subquery-node-bnbchain:
+  #   image: onfinality/subql-node-ethereum:latest
+  #   depends_on:
+  #     "postgres":
+  #       condition: service_healthy
+  #   restart: always
+  #   environment:
+  #     DB_USER: postgres
+  #     DB_PASS: postgres
+  #     DB_DATABASE: postgres
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #   volumes:
+  #     - ./:/app
+  #   command:
+  #     - --multi-chain
+  #     - -f=/app/bnbchain.yaml
+  #     - --db-schema=synthmos
+  #     - --workers=1
+  #     - --batch-size=10
+  #     - --unfinalized-blocks=true
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://subquery-node-bnbchain:3000/ready"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
 
-  subquery-node-moonbeam:
-    image: onfinality/subql-node-ethereum:latest
-    depends_on:
-      "postgres":
-        condition: service_healthy
-    restart: always
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    volumes:
-      - ./:/app
-    command:
-      - --multi-chain
-      - -f=/app/moonbeam.ts
-      - --db-schema=synthmos
-      - --workers=1
-      - --batch-size=10
-      - --unfinalized-blocks=true
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://subquery-node-moonbeam:3000/ready"]
-      interval: 3s
-      timeout: 5s
-      retries: 10
+  # subquery-node-moonbeam:
+  #   image: onfinality/subql-node-ethereum:latest
+  #   depends_on:
+  #     "postgres":
+  #       condition: service_healthy
+  #   restart: always
+  #   environment:
+  #     DB_USER: postgres
+  #     DB_PASS: postgres
+  #     DB_DATABASE: postgres
+  #     DB_HOST: postgres
+  #     DB_PORT: 5432
+  #   volumes:
+  #     - ./:/app
+  #   command:
+  #     - --multi-chain
+  #     - -f=/app/moonbeam.yaml
+  #     - --db-schema=synthmos
+  #     - --workers=1
+  #     - --batch-size=10
+  #     - --unfinalized-blocks=true
+  #   healthcheck:
+  #     test: ["CMD", "curl", "-f", "http://subquery-node-moonbeam:3000/ready"]
+  #     interval: 3s
+  #     timeout: 5s
+  #     retries: 10
 
   graphql-engine:
     image: onfinality/subql-query:latest

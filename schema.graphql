@@ -7,6 +7,19 @@ enum Option {
   LOW
 }
 
+enum StatusCode {
+  IN_PROGRESS
+  INVALID_UPDATE_DATA
+  INVALID_UPDATE_DATA_SOURCE
+  INVALID_OPTION
+  INVALID_WORMHOLE_VAA
+  MARKET_DOES_NOT_EXIST
+  CANNOT_STAKE_ZERO_AMOUNT
+  INSUFFICIENT_BALANCE
+  ROUND_NOT_SETTLED
+  POSITION_NOT_FOUND
+}
+
 type Round @entity {
   "MarketId-RoundID"
   id: ID!
@@ -20,10 +33,10 @@ type Round @entity {
   entryDeadline: BigInt!
   "Asset market closing price"
   closingPrice: BigInt
-  "Total share amount of users participating in the current round"
-  volume: BigInt!
-  "Total share amount of winners in the current round"
-  totalWinShare: BigInt!
+  "Total staked amount of users participating in the current round"
+  totalStake: BigInt!
+  "Total staked amount of winners in the current round"
+  totalWinningStake: BigInt!
   "Total amount available as reward for current round"
   rewardPool: BigInt!
   "True if this is a no loss round"
@@ -56,8 +69,12 @@ type Deposit @entity {
   currency: String!
   "Amount deposited"
   amount: BigInt!
+  "True if deposit is confirmed at the controller"
+  isCompleted: Boolean!
   "Unix timestamp of when deposit was received"
   createdAt: BigInt!
+  "Unix timestamp of when deposit was received"
+  updatedAt: BigInt
 }
 
 type Position @entity {
@@ -70,13 +87,17 @@ type Position @entity {
   "Asset price when position was taken"
   price: BigInt!
   "Amount staked as wager for position"
-  share: BigInt!
+  stake: BigInt!
   "Predicted market directon"
   option: Option!
+  "True if the position is open"
+  isOpen: Boolean!
   "True if user has claimed reward for round"
   isRewardClaimed: Boolean!
   "Amount of reward claimed"
   rewardAmountClaimed: BigInt
+  "Postion status code"
+  status: StatusCode!
   "Unix timestamp when position was created"
   createdAt: BigInt!
 }
