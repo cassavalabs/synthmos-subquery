@@ -24,17 +24,21 @@ const project: EthereumProject = {
   },
   network: {
     chainId: "1001",
-    endpoint: ["https://klaytn.blockpi.network/v1/rpc/public"],
-    // dictionary: "https://dict-tyk.subquery.network/query/klaytn"
+    endpoint: [
+      "https://rpc.ankr.com/klaytn_testnet",
+      "https://public-en-baobab.klaytn.net",
+    ],
+    dictionary: "https://dict-tyk.subquery.network/query/klaytn",
   },
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 131206820,
+      startBlock: 139708540,
+      // startBlock: 139682003, deployed at
       // This is the block that the contract was deployed on https://scope.klaytn.com/token/0x34d21b1e550d73cee41151c77f3c73359527a396
       options: {
         abi: "controller",
-        address: "0x34d21b1e550d73cee41151c77f3c73359527a396",
+        address: "0xfC264acFBA063360Fb4F39421593924A9aEDb489",
       },
       assets: new Map([["controller", { file: "./abis/controller.abi.json" }]]),
       mapping: {
@@ -90,7 +94,8 @@ const project: EthereumProject = {
             handler: "handleRoundSettled",
             filter: {
               topics: [
-                "SettleRound(MarketId indexed id, uint256 indexed roundId, uint256 totalStake, int256 closingPrice, uint256 protocolFee, uint256 totalWinningStake)",
+                // "SettleRound(MarketId indexed id, uint256 indexed roundId, uint256 totalStake, int256 closingPrice, uint256 protocolFee, uint256 totalWinningStake)",
+                "0x976db507caa6970df8dcc4f17a1c226d0d0d5f857143af166fbe024c6e58c6c0",
               ],
             },
           },
@@ -99,7 +104,8 @@ const project: EthereumProject = {
             handler: "handleNewRound",
             filter: {
               topics: [
-                "NewRound(MarketId indexed id, uint256 indexed roundId, uint256 openingTime, uint256 closingTime, uint256 entryDeadline)",
+                // "NewRound(MarketId indexed id, uint256 indexed roundId, uint256 openingTime, uint256 closingTime, uint256 entryDeadline)",
+                "0xe0433ef8187114dfc74beb31ecdf7f78aa5ec7aec5b18add69a71f3dfe53422d",
               ],
             },
           },
@@ -108,7 +114,8 @@ const project: EthereumProject = {
             handler: "handleCreateMarket",
             filter: {
               topics: [
-                "CreateMarket(MarketId indexed marketId, bytes32 indexed oracleId, address indexed currency, address creator, uint8 protocolFee, uint256 deadline, uint256 duration)",
+                // "CreateMarket(MarketId indexed marketId, bytes32 indexed oracleId, address indexed currency, address creator, uint8 protocolFee, uint256 deadline, uint256 duration)",
+                "0x50e3bef2a9351fbd29a3269bc3f5347dc9bbf14b26dc9991394a806b334aea4b",
               ],
             },
           },

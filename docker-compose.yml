@@ -32,12 +32,13 @@ services:
     volumes:
       - ./:/app
     command:
-      # - --multi-chain
+      - --multi-chain
       - -f=/app/klaytn.yaml
       - --db-schema=synthmos
-      - --workers=1
-      - --batch-size=10
-      - --unfinalized-blocks=true
+      - --workers=5
+      - --skip-transactions=true
+      - --batch-size=100
+      - --unfinalized-blocks=false
     healthcheck:
       test: ["CMD", "curl", "-f", "http://subquery-node-klaytn:3000/ready"]
       interval: 3s
@@ -125,32 +126,33 @@ services:
   #     timeout: 5s
   #     retries: 10
 
-  # subquery-node-moonbeam:
-  #   image: onfinality/subql-node-ethereum:latest
-  #   depends_on:
-  #     "postgres":
-  #       condition: service_healthy
-  #   restart: always
-  #   environment:
-  #     DB_USER: postgres
-  #     DB_PASS: postgres
-  #     DB_DATABASE: postgres
-  #     DB_HOST: postgres
-  #     DB_PORT: 5432
-  #   volumes:
-  #     - ./:/app
-  #   command:
-  #     - --multi-chain
-  #     - -f=/app/moonbeam.yaml
-  #     - --db-schema=synthmos
-  #     - --workers=1
-  #     - --batch-size=10
-  #     - --unfinalized-blocks=true
-  #   healthcheck:
-  #     test: ["CMD", "curl", "-f", "http://subquery-node-moonbeam:3000/ready"]
-  #     interval: 3s
-  #     timeout: 5s
-  #     retries: 10
+  subquery-node-moonbeam:
+    image: onfinality/subql-node-ethereum:latest
+    depends_on:
+      "postgres":
+        condition: service_healthy
+    restart: always
+    environment:
+      DB_USER: postgres
+      DB_PASS: postgres
+      DB_DATABASE: postgres
+      DB_HOST: postgres
+      DB_PORT: 5432
+    volumes:
+      - ./:/app
+    command:
+      - --multi-chain
+      - -f=/app/moonbeam.yaml
+      - --db-schema=synthmos
+      - --workers=5
+      - --skip-transactions=true
+      - --batch-size=100
+      - --unfinalized-blocks=false
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://subquery-node-moonbeam:3000/ready"]
+      interval: 3s
+      timeout: 5s
+      retries: 10
 
   graphql-engine:
     image: onfinality/subql-query:latest

@@ -25,19 +25,19 @@ const project: EthereumProject = {
   network: {
     chainId: "1287",
     endpoint: [
-      "wss://wss.api.moonbase.moonbeam.network",
       "https://rpc.testnet.moonbeam.network",
-      "https://moonbase.unitedbloc.com:1000"
+      "https://rpc.api.moonbase.moonbeam.network",
+      "https://moonbase.unitedbloc.com:1000",
     ],
-    // dictionary: ""
+    dictionary: "https://dict-tyk.subquery.network/query/moonbeam"
   },
   dataSources: [
     {
       kind: EthereumDatasourceKind.Runtime,
-      startBlock: 131206820,
+      startBlock: 5575642,
       options: {
         abi: "router",
-        address: "",
+        address: "0x1bc16Bf9615cFd3733F10222b287194CC4953e47",
       },
       assets: new Map([["router", { file: "./abis/router.abi.json" }]]),
       mapping: {

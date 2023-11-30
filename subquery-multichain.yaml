@@ -4,7 +4,4 @@ query:
   version: '*'
 projects:
   - klaytn.yaml
-  - ethereum.yaml
-  - bnbchain.yaml
-  - avalanche.yaml
   - moonbeam.yaml

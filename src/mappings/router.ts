@@ -5,7 +5,7 @@ import {
   LowLog,
   SettlePositionLog,
   WithdrawalLog,
-} from "../types/abi-interfaces/ControllerAbi";
+} from "../types/abi-interfaces/RouterAbi";
 import {
   getOrCreateDeposit,
   getOrCreatePosition,
